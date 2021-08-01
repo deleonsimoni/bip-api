@@ -14,8 +14,8 @@ export class AppController {
     constructor(private authService: AuthService, private userService: UserService) {
     }
 
+
     @Public()
-    @UseGuards(LocalAuthGuard)
     @Post('auth/login')
     async login(@Body() login: LoginDto) {
         return this.authService.login(login);
@@ -35,6 +35,7 @@ export class AppController {
     @Public()
     @Post()
     async create(@Body() user: CreateUserDto) {
+        // const {password, ...result} = await this.userService.create(user);
         return this.userService.create(user);
     }
 }
