@@ -8,7 +8,7 @@ export class User {
     @Prop({require: true})
     password: string;
 
-    @Prop({require: true, lowercase: true})
+    @Prop({require: true, lowercase: true, unique: true})
     email: string;
 
     @Prop({type: Date, default: new Date()})
