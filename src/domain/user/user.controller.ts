@@ -19,6 +19,7 @@ export class UserController extends GenericController<UserDocument> {
         return this.authService.login(login);
     }
 
+
     @Get('profile')
     getProfile(@Request() req) {
         return req.user;

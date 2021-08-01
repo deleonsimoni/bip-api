@@ -1,4 +1,4 @@
-import {Body, Controller, Delete, Get, Param, Post, Put} from '@nestjs/common';
+import {Body, Controller, Delete, Get, Param, Post, Put, Request} from '@nestjs/common';
 import {Document} from "mongoose";
 import {GenericService} from "./generic.service";
 import {ApiBearerAuth} from "@nestjs/swagger";
@@ -10,12 +10,14 @@ export class GenericController<T extends Document> {
     }
 
     @Post()
-    async create(@Body() obj: T) {
-        return this.create(obj);
+    async create(@Body() obj, @Request() req) {
+        obj.owner = req.user.id;
+        return this.service.create(obj);
     }
 
     @Put(':id')
     async update(@Param('id') id: string, @Body() obj: T) {
+
         return this.service.update(id, obj);
     }
 
