@@ -3,7 +3,7 @@ import {User, UserDocument} from "../schemas/user";
 import {CreateUserDto} from "./dto/createUser.dto";
 import {InjectModel} from "@nestjs/mongoose";
 import * as bcrypt from 'bcrypt';
-import {GenericService} from "../GenericService";
+import {GenericService} from "../generics/generic.service";
 
 
 export class UserService extends GenericService<UserDocument> {
@@ -19,15 +19,16 @@ export class UserService extends GenericService<UserDocument> {
         return this.modelUser.findOne({email: email}).exec();
     }
 
-    async create(createUserDto: CreateUserDto): Promise<User> {
+    override async create(obj: any): Promise<UserDocument> {
+        return this.createUser(obj);
+    }
+
+    async createUser(createUserDto: CreateUserDto): Promise<UserDocument> {
         const salt = await bcrypt.genSalt();
         createUserDto.password =  await bcrypt.hash(createUserDto.password, salt);
         const createdUser = new this.modelUser(createUserDto);
-        return createdUser.save();
+        return createdUser.save().catch(reason => reason);
     }
 
-    async findAll(): Promise<User[]> {
-        return this.modelUser.find().exec();
-    }
 
 }
