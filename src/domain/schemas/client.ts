@@ -15,7 +15,7 @@ export class Client {
     @Prop({type: Date, default: new Date()})
     createdAt: Date;
 
-    @Prop({require: true, trim: true})
+    @Prop({required: true, trim: true})
     name: String;
 
     @Prop({required: true, type: mongoose.Schema.Types.ObjectId, ref: "Company"})
@@ -24,7 +24,7 @@ export class Client {
     @Prop({type: mongoose.Schema.Types.ObjectId, ref: "Client"})
     headquarters: Client;
 
-    @Prop({require: true, trim: true, lowercase: true})
+    @Prop({required: true, trim: true, lowercase: true})
     email: String;
 
 
