@@ -17,7 +17,7 @@ export class User {
     @Prop({require: true})
     name: String;
 
-    @Prop({required: true, type: mongoose.Schema.Types.ObjectId, ref: "User"})
+    @Prop({type: mongoose.Schema.Types.ObjectId, ref: "User"})
     owner: User;
 }
 
