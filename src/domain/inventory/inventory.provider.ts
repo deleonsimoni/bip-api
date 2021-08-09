@@ -1,5 +1,5 @@
 import { Connection } from 'mongoose';
-import {InventorySchema} from "../schemas/Inventory";
+import {InventorySchema} from "../schemas/inventory";
 
 export const InventoryProvider = [
     {

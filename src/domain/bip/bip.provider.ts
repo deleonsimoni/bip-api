@@ -1,5 +1,5 @@
 import { Connection } from 'mongoose';
-import {BipSchema} from "../schemas/Bip";
+import {BipSchema} from "../schemas/bip";
 
 export const BipProvider = [
     {

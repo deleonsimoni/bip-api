@@ -1,5 +1,5 @@
 import { Connection } from 'mongoose';
-import {SectionSchema} from "../schemas/Section";
+import {SectionSchema} from "../schemas/section";
 
 export const SectionProvider = [
     {
