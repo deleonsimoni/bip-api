@@ -18,5 +18,7 @@ export class ClientService extends GenericService<ClientDocument> {
     async findAllByOwner(userId): Promise<ClientDocument[]> {
         return this.modelClient.find({owner: userId}).exec().catch(reason => reason);
     }
-
+    async countByOwner(userId): Promise<number> {
+        return this.modelClient.count({owner: userId}).exec().catch(reason => reason);
+    }
 }
