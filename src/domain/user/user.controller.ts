@@ -32,5 +32,9 @@ export class UserController extends GenericController<UserDocument> {
         return this.userService.create(user);
     }
 
+    @Get()
+    override findAll(@Request() req): Promise<UserDocument[]> {
+       return this.userService.findAllByOwner(req.user.id);
+   }
 
 }

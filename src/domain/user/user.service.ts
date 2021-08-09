@@ -5,6 +5,7 @@ import {InjectModel} from "@nestjs/mongoose";
 import * as bcrypt from 'bcrypt';
 import {GenericService} from "../generics/generic.service";
 import {HttpException, HttpStatus} from "@nestjs/common";
+import {Client} from "../schemas/client";
 
 
 export class UserService extends GenericService<UserDocument> {
@@ -24,6 +25,10 @@ export class UserService extends GenericService<UserDocument> {
         return this.createUser(obj);
     }
 
+    async findAllByOwner(userId): Promise<UserDocument[]> {
+        return this.modelUser.find({owner: userId}).exec().catch(reason => reason);
+    }
+
     async createUser(createUserDto: CreateUserDto): Promise<UserDocument> {
         const salt = await bcrypt.genSalt();
         createUserDto.password =  await bcrypt.hash(createUserDto.password, salt);
@@ -32,6 +37,5 @@ export class UserService extends GenericService<UserDocument> {
             throw new HttpException(reason, HttpStatus.BAD_REQUEST)
         });
     }
-
 
 }

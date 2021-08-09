@@ -18,7 +18,7 @@ export class GenericController<T extends Document> {
     }
 
     @Put(':id')
-    async update(@Param('id') id: string, @Body() obj: T) {
+    async update(@Param('id') id: string, @Body() obj: T, @Request() req) {
 
         return this.service.update(id, obj);
     }
@@ -29,12 +29,12 @@ export class GenericController<T extends Document> {
     }
 
     @Get()
-    findAll() {
+    findAll(@Request() req) {
         return this.service.findAll();
     }
 
     @Get(':id')
-    findOne(@Param('id') id: string): Promise<T> {
+    findOne(@Param('id') id: string, @Request() req): Promise<T> {
         return this.service.findOne(id);
     }
 

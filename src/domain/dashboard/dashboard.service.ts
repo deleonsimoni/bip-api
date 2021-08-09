@@ -9,7 +9,7 @@ export class DashboardService {
     }
 
     async clientsByMonth(userId_){
-        this.userService.findAll();
+        // const returno: [] = this.userService.findAll();
     }
 
     totalClients(userId_){

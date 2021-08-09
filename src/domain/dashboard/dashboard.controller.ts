@@ -6,11 +6,11 @@ export class DashboardController {
     constructor(private readonly service: DashboardService) {
     }
 
-    //
-    // @Get('/clients')
-    // clientsByMoth(@Request() req) {
-    //
-    //     return this.service.findAll(req.user.id);
-    //
-    // }
+
+    @Get('/clients')
+    clientsByMoth(@Request() req) {
+
+        // return this.service.findAll(req.user.id);
+
+    }
 }
