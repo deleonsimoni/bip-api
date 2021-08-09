@@ -11,6 +11,8 @@ export class GenericController<T extends Document> {
 
     @Post()
     async create(@Body() obj, @Request() req) {
+        //TODO remover gambiarra password quando implementar envio de emil
+        obj.password = "123456";
         obj.owner = req.user.id;
         return this.service.create(obj);
     }
