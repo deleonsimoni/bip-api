@@ -4,6 +4,7 @@ import {CreateUserDto} from "./dto/createUser.dto";
 import {InjectModel} from "@nestjs/mongoose";
 import * as bcrypt from 'bcrypt';
 import {GenericService} from "../generics/generic.service";
+import {HttpException, HttpStatus} from "@nestjs/common";
 
 
 export class UserService extends GenericService<UserDocument> {
@@ -27,7 +28,9 @@ export class UserService extends GenericService<UserDocument> {
         const salt = await bcrypt.genSalt();
         createUserDto.password =  await bcrypt.hash(createUserDto.password, salt);
         const createdUser = new this.modelUser(createUserDto);
-        return createdUser.save().catch(reason => reason);
+        return createdUser.save().catch(reason => {
+            throw new HttpException(reason, HttpStatus.BAD_REQUEST)
+        });
     }
 
 

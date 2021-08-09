@@ -6,9 +6,34 @@ import {InventoryService} from "../inventory/inventory.service";
 @Injectable()
 export class DashboardService {
     constructor(private userService: UserService, private clientService:ClientService, private inventoryService:InventoryService) {
+    }
 
+    async clientsByMonth(userId_){
+        this.userService.findAll();
+    }
 
-
+    totalClients(userId_){
 
     }
+
+    totalInventory(userId_){
+
+    }
+
+    inventoriesByMonth(userId_){
+
+    }
+
+    delaysByMonth(userId_){
+
+    }
+
+    totalDelayedInventory(userId_){
+
+    }
+
+    totalEmployee(userId_){
+
+    }
+
 }
