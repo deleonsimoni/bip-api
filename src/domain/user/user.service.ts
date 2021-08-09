@@ -33,7 +33,7 @@ export class UserService extends GenericService<UserDocument> {
         return this.modelUser.count({owner: userId}).exec().catch(reason => reason);
     }
 
-    async createUser(createUserDto: CreateUserDto): Promise<UserDocument> {
+    async createUser(createUserDto: any): Promise<UserDocument> {
         const salt = await bcrypt.genSalt();
         createUserDto.password =  await bcrypt.hash(createUserDto.password, salt);
         const createdUser = new this.modelUser(createUserDto);
