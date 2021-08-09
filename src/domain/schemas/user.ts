@@ -19,6 +19,41 @@ export class User {
 
     @Prop({type: mongoose.Schema.Types.ObjectId, ref: "User"})
     owner: User;
+
+
+    @Prop({trim: true})
+    cpf: String;
+
+    @Prop({trim: true})
+    street: String;
+
+    @Prop({trim: true})
+    number: number;
+
+    @Prop({trim: true})
+    complement: String;
+
+    @Prop({trim: true})
+    zip: String;
+
+    @Prop({trim: true})
+    city: String;
+
+    @Prop({trim: true})
+    district: String;
+
+    @Prop({trim: true})
+    country: String;
+
+    @Prop({trim: true})
+    state: String;
+
+
+    @Prop({trim: true})
+    whatsapp: String;
+
+    @Prop({trim: true})
+    phone: String;
 }
 
 

@@ -10,4 +10,8 @@ export class ClientService extends GenericService<ClientDocument> {
     ) {
         super(modelClient);
     }
+
+    async findAllHqs(userId): Promise<Client[]> {
+        return this.modelClient.find({owner: userId, headquarters: { "$exists" : false } }).exec().catch(reason => reason);
+    }
 }

@@ -12,6 +12,7 @@ import { InventoryModule } from './domain/inventory/inventory.module';
 import { SectionModule } from './domain/section/section.module';
 import { BipModule } from './domain/bip/bip.module';
 import { ItemModule } from './domain/item/item.module';
+import { DashboardModule } from './domain/dashboard/dashboard.module';
 
 @Module({
     imports: [AuthModule, UserModule,
@@ -21,7 +22,8 @@ import { ItemModule } from './domain/item/item.module';
         InventoryModule,
         SectionModule,
         BipModule,
-        ItemModule],
+        ItemModule,
+        DashboardModule],
     controllers: [AppController],
     providers: [AppService, {
         provide: APP_GUARD,
