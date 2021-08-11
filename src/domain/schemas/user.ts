@@ -1,6 +1,9 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
 import * as mongoose from "mongoose";
+import {Exclude} from "class-transformer";
+import {Phones} from "./phones";
+import {Address} from "./address";
 export type UserDocument = User & Document;
 
 @Schema()
@@ -24,36 +27,13 @@ export class User {
     @Prop({trim: true})
     cpf: String;
 
-    @Prop({trim: true})
-    street: String;
+    @Prop()
+    phones: Phones;
 
-    @Prop({trim: true})
-    number: number;
-
-    @Prop({trim: true})
-    complement: String;
-
-    @Prop({trim: true})
-    zip: String;
-
-    @Prop({trim: true})
-    city: String;
-
-    @Prop({trim: true})
-    district: String;
-
-    @Prop({trim: true})
-    country: String;
-
-    @Prop({trim: true})
-    state: String;
+    @Prop()
+    address: Address;
 
 
-    @Prop({trim: true})
-    whatsapp: String;
-
-    @Prop({trim: true})
-    phone: String;
 }
 
 

@@ -3,6 +3,8 @@ import {Document} from 'mongoose';
 import {User} from "./user";
 import * as mongoose from "mongoose";
 import {Company} from "./company";
+import {Phones} from "./phones";
+import {Address} from "./address";
 
 export type ClientDocument = Client & Document;
 
@@ -18,7 +20,7 @@ export class Client {
     @Prop({required: true, trim: true})
     name: String;
 
-    @Prop({required: true, type: mongoose.Schema.Types.ObjectId, ref: "Company"})
+    @Prop({type: mongoose.Schema.Types.ObjectId, ref: "Company"})
     contract: Company;
 
     @Prop({type: mongoose.Schema.Types.ObjectId, ref: "Client"})
@@ -27,32 +29,15 @@ export class Client {
     @Prop({required: true, trim: true, lowercase: true})
     email: String;
 
+    @Prop({trim: true})
+    document: String;
 
-    @Prop({trim: true})
-    cpfcnpj: String;
-    @Prop({trim: true})
-    mainphone: String;
-    @Prop({trim: true})
-    secondphone: String;
+    @Prop()
+    phones: Phones;
 
+    @Prop()
+    address: Address;
 
-    @Prop({trim: true})
-    street: String;
-
-    @Prop({trim: true})
-    zip: String;
-
-    @Prop({trim: true})
-    city: String;
-
-    @Prop({trim: true})
-    district: String;
-
-    @Prop({trim: true})
-    country: String;
-
-    @Prop({trim: true})
-    state: String;
 
 
 }

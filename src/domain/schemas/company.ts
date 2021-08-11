@@ -2,6 +2,8 @@ import {Prop, Schema, SchemaFactory} from '@nestjs/mongoose';
 import {Document} from 'mongoose';
 import {User} from "./user";
 import * as mongoose from "mongoose";
+import {Phones} from "./phones";
+import {Address} from "./address";
 
 export type CompanyDocument = Company & Document;
 
@@ -20,27 +22,14 @@ export class Company {
     @Prop([{type: mongoose.Schema.Types.ObjectId, ref: "User"}])
     employees: User[];
 
-
     @Prop({trim: true})
     cpfcnpj: String;
 
-    @Prop({trim: true})
-    street: String;
+    @Prop()
+    phones: Phones;
 
-    @Prop({trim: true})
-    zip: String;
-
-    @Prop({trim: true})
-    city: String;
-
-    @Prop({trim: true})
-    district: String;
-
-    @Prop({trim: true})
-    country: String;
-
-    @Prop({trim: true})
-    state: String;
+    @Prop()
+    address: Address;
 
 
 }
