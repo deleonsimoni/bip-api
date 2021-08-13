@@ -13,11 +13,15 @@ import { SectionModule } from './domain/section/section.module';
 import { BipModule } from './domain/bip/bip.module';
 import { ItemModule } from './domain/item/item.module';
 import { DashboardModule } from './domain/dashboard/dashboard.module';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
     imports: [AuthModule, UserModule,
         MongooseModule.forRoot('mongodb://localhost:27017/bip'),
         CompanyModule,
+        ConfigModule.forRoot({
+            envFilePath: `${process.env.NODE_ENV}.env`
+        }),
         ClientModule,
         InventoryModule,
         SectionModule,
