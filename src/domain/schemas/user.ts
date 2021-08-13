@@ -23,6 +23,8 @@ export class User {
     @Prop({type: mongoose.Schema.Types.ObjectId, ref: "User"})
     owner: User;
 
+    @Prop()
+    price: Number;
 
     @Prop({trim: true})
     cpf: String;

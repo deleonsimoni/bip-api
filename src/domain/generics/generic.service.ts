@@ -1,5 +1,6 @@
 import {Injectable} from '@nestjs/common';
 import {Document, Model} from 'mongoose';
+import {HttpException, HttpStatus} from "@nestjs/common";
 
 @Injectable()
 export abstract class GenericService<T extends Document> {
@@ -29,7 +30,9 @@ export abstract class GenericService<T extends Document> {
     }
 
     async update(id: string, obj: any): Promise<T> {
-        return this.model.findByIdAndUpdate(id, obj).exec().catch(reason => reason);
+        return this.model.findByIdAndUpdate(id, obj).exec().catch(reason => {
+            throw new HttpException(reason, HttpStatus.BAD_REQUEST)
+        });;
     }
 
     async delete(id: string) {
