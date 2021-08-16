@@ -32,11 +32,10 @@ export abstract class GenericService<T extends Document> {
     async update(id: string, obj: any): Promise<T> {
         return this.model.findByIdAndUpdate(id, obj).exec().catch(reason => {
             throw new HttpException(reason, HttpStatus.BAD_REQUEST)
-        });;
+        });
     }
 
     async delete(id: string) {
-        const obj = this.model.findByIdAndDelete(id).exec();
-        return (await obj).remove().catch(reason => reason);
+       return this.model.findByIdAndDelete(id).exec().catch(reason => reason);
     }
 }

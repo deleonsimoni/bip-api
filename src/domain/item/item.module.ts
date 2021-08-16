@@ -7,6 +7,7 @@ import {Item, ItemSchema} from "../schemas/item";
 @Module({
   imports: [MongooseModule.forFeature([{ name: Item.name, schema: ItemSchema }])],
   controllers: [ItemController],
+  exports: [ItemService],
   providers: [ItemService]
 })
 export class ItemModule {}

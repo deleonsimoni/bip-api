@@ -3,6 +3,7 @@ import { Document } from 'mongoose';
 import * as mongoose from "mongoose";
 import {Client} from "./client";
 import {User} from "./user";
+import {PositionFile} from "./positionFile";
 
 export type InventoryDocument = Inventory & Document;
 
@@ -11,7 +12,10 @@ export class Inventory {
 
 
     @Prop({require: true})
-    name: String;
+    description: String;
+
+    @Prop()
+    isQuantify: boolean;
 
     @Prop({type: Date, default: new Date()})
     createdAt: Date;
@@ -22,12 +26,17 @@ export class Inventory {
     @Prop({type: Date})
     endDate: Date;
 
-    @Prop({required:true, type: mongoose.Schema.Types.ObjectId, ref: "Client"})
+    @Prop({ type: mongoose.Schema.Types.ObjectId, ref: "Client"})
     client: Client;
 
-    @Prop({required: true, type: mongoose.Schema.Types.ObjectId, ref: "User"})
-    employee: User;
+    @Prop([{type: mongoose.Schema.Types.ObjectId, ref: "User"}])
+    employees: User[];
 
+    @Prop()
+    positionFile: PositionFile;
+
+    @Prop()
+    url: String;
 }
 
 

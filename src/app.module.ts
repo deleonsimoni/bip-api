@@ -15,20 +15,22 @@ import { ItemModule } from './domain/item/item.module';
 import { DashboardModule } from './domain/dashboard/dashboard.module';
 import { ConfigModule } from '@nestjs/config';
 import { FileService } from './domain/file/file.service';
+import { FileModule } from './domain/file/file.module';
 
 @Module({
     imports: [AuthModule, UserModule,
         MongooseModule.forRoot('mongodb://localhost:27017/bip'),
         CompanyModule,
         ConfigModule.forRoot({
-            envFilePath: `${process.env.NODE_ENV}.env`
+            envFilePath: `${process.env.NODE_ENV || 'dev'}.env`
         }),
         ClientModule,
         InventoryModule,
         SectionModule,
         BipModule,
         ItemModule,
-        DashboardModule],
+        DashboardModule,
+        FileModule],
     controllers: [AppController],
     providers: [AppService, {
         provide: APP_GUARD,
