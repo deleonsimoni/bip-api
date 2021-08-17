@@ -26,12 +26,12 @@ export class InventoryService  {
     return this.model.find().exec().catch(reason => reason);
   }
 
-  async create(obj: Inventory, file: Express.Multer.File): Promise<Inventory> {
+  async create(obj: Inventory, file: Express.Multer.File, req: any): Promise<Inventory> {
     if(file){
       let url;
       try {
 
-        url = await this.fileservice.uploadFile(file.buffer, this.getFileName(obj));
+        url = await this.fileservice.uploadFile(file.buffer, this.getFileName(obj, file, req));
       } catch (e){
         throw new HttpException("Invalid File", HttpStatus.BAD_REQUEST);
       }
@@ -48,16 +48,28 @@ export class InventoryService  {
     }
   }
 
-  getFileName(obj) {
-    return obj.client + "-" + new Date().toString() + ".txt";
+  getFileName(obj, file, req) {
+    let a = `${req.user.id}/clients/${obj.client}/inventario/${this.dataAtualFormatada()}/${file.originalname}`;
+    return a;
 
   }
-  async update(id: string, obj: any, file: Express.Multer.File): Promise<Inventory> {
+
+  dataAtualFormatada(){
+    var data = new Date(),
+        dia  = data.getDate().toString(),
+        diaF = (dia.length == 1) ? '0'+dia : dia,
+        mes  = (data.getMonth()+1).toString(), //+1 pois no getMonth Janeiro começa com zero.
+        mesF = (mes.length == 1) ? '0'+mes : mes,
+        anoF = data.getFullYear();
+    return diaF+"-"+mesF+"-"+anoF;
+  }
+
+  async update(id: string, obj: any, file: Express.Multer.File, req): Promise<Inventory> {
     if( file){
       let url;
       try {
 
-        url = await this.fileservice.uploadFile(file.buffer, this.getFileName(obj));
+        url = await this.fileservice.uploadFile(file.buffer, this.getFileName(obj, file, req));
       } catch (e){
         throw new HttpException("Invalid File", HttpStatus.BAD_REQUEST);
       }

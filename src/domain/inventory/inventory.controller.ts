@@ -13,9 +13,9 @@ export class InventoryController  {
 
     @Post()
     @UseInterceptors(FileInterceptor('file'))
-    async create(@Body() obj, @Request() req, @UploadedFile() file: Express.Multer.File) {
-        const object = JSON.parse(obj.data);
-        return this.service.create(object, file);
+    async create(@Body() body,@Request() req, @UploadedFile() file: Express.Multer.File) {
+        const object = JSON.parse(body.formulario);
+        return this.service.create(object, file, req);
     }
 
     @Put(':id')
@@ -23,7 +23,7 @@ export class InventoryController  {
     async update(@Param('id') id: string, @Body() obj: any, @Request() req, @UploadedFile() file: Express.Multer.File) {
         const object = JSON.parse(obj.data);
 
-        return this.service.update(id, object, file);
+        return this.service.update(id, object, file, req);
     }
 
     @Delete(':id')
