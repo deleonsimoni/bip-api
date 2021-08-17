@@ -33,10 +33,4 @@ export class FileService {
         }).promise();
     }
 
-    getS3() {
-        return new S3({
-            accessKeyId: this.configService.get('USER_S3'),
-            secretAccessKey: this.configService.get('PASSWORD_S3'),
-        });
-    }
 }

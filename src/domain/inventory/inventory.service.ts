@@ -41,7 +41,7 @@ export class InventoryService  {
       let persisted;
       persisted = await created.save().catch(reason => reason);
 
-      await this.itemService.loadItensFromFyle(file.buffer, persisted, persisted._id);
+      await this.itemService.loadItensFromFile(file.buffer, persisted, persisted._id);
       return persisted;
     }else{
       throw new HttpException("Invalid File", HttpStatus.BAD_REQUEST);
@@ -74,7 +74,7 @@ export class InventoryService  {
         throw new HttpException("Invalid File", HttpStatus.BAD_REQUEST);
       }
       obj.url = url;
-      await this.itemService.loadItensFromFyle(file.buffer, obj, id);
+      await this.itemService.loadItensFromFile(file.buffer, obj, id);
     }
     return this.model.findByIdAndUpdate(id, obj).exec().catch(reason => {
       throw new HttpException(reason, HttpStatus.BAD_REQUEST)

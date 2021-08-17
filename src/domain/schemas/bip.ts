@@ -13,7 +13,6 @@ export class Bip {
     @Prop({required: true, type: mongoose.Schema.Types.ObjectId, ref: "Item"})
     item: Item;
 
-
     @Prop({required: true, type: mongoose.Schema.Types.ObjectId, ref: "Section"})
     section: Section;
 

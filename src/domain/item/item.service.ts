@@ -19,7 +19,7 @@ export class ItemService extends GenericService<ItemDocument> {
         super(modelItem);
     }
 
-    async loadItensFromFyle(filestr: Buffer, obj: Inventory, idInventory) {
+    async loadItensFromFile(filestr: Buffer, obj: Inventory, idInventory) {
         await this.deleteByInventory(idInventory);
         const readline = require('readline');
         var bufferStream = new stream.PassThrough();
@@ -67,6 +67,10 @@ export class ItemService extends GenericService<ItemDocument> {
             console.log(i);
         });
 
+    }
+
+    async getItemByInventoryId(inventoryId) {
+        return this.modelItem.find({inventory: inventoryId}).exec().catch(reason => reason);
     }
 
     async createItem(input: Item) {

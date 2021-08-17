@@ -13,7 +13,7 @@ export class Section {
     name: String;
 
     @Prop({required: true, type: mongoose.Schema.Types.ObjectId, ref: "Inventory"})
-    employee: Inventory;
+    inventory: Inventory;
 
 }
 

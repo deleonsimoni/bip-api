@@ -8,4 +8,9 @@ export class ItemController extends GenericController<ItemDocument>{
   constructor(private readonly itemService: ItemService) {
     super(itemService);
   }
+
+
+  findOne(id: string, req): Promise<ItemDocument> {
+    return this.itemService.getItemByInventoryId(id);
+  }
 }
