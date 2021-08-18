@@ -2,7 +2,7 @@ import {Prop, Schema, SchemaFactory} from '@nestjs/mongoose';
 import * as mongoose from 'mongoose';
 import {Document} from 'mongoose';
 import {Section} from "./section";
-import {Item} from "./item";
+import {ItemList} from "./itemList";
 
 export type BipDocument = Section & Document;
 
@@ -11,7 +11,7 @@ export class Bip {
 
 
     @Prop({required: true, type: mongoose.Schema.Types.ObjectId, ref: "Item"})
-    item: Item;
+    item: ItemList;
 
     @Prop({required: true, type: mongoose.Schema.Types.ObjectId, ref: "Section"})
     section: Section;

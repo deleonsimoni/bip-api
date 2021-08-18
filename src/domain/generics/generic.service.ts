@@ -21,12 +21,16 @@ export abstract class GenericService<T extends Document> {
     }
 
     async findAll(): Promise<T[]> {
-        return this.model.find().exec().catch(reason => reason);
+        return this.model.find().exec().catch(reason => {
+            throw new HttpException(reason, HttpStatus.BAD_REQUEST)
+        });
     }
 
     async create(obj: any): Promise<T> {
         const created = new this.model(obj);
-        return created.save().catch(reason => reason);
+        return created.save().catch(reason => {
+            throw new HttpException(reason, HttpStatus.BAD_REQUEST)
+        });
     }
 
     async update(id: string, obj: any): Promise<T> {
@@ -36,6 +40,8 @@ export abstract class GenericService<T extends Document> {
     }
 
     async delete(id: string) {
-       return this.model.findByIdAndDelete(id).exec().catch(reason => reason);
+        return this.model.findByIdAndDelete(id).exec().catch(reason => {
+            throw new HttpException(reason, HttpStatus.BAD_REQUEST)
+        });
     }
 }

@@ -19,7 +19,7 @@ import { FileModule } from './domain/file/file.module';
 
 @Module({
     imports: [AuthModule, UserModule,
-        MongooseModule.forRoot('mongodb://localhost:27017/bip'),
+        MongooseModule.forRoot('mongodb://localhost:27017/bip?retryWrites=false'),
         CompanyModule,
         ConfigModule.forRoot({
             envFilePath: `${process.env.NODE_ENV || 'dev'}.env`
