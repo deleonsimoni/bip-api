@@ -25,6 +25,14 @@ export class UserService extends GenericService<UserDocument> {
         return this.createUser(obj);
     }
 
+    async update(id: string, obj: any): Promise<UserDocument> {
+        if (obj.password) {
+            const salt = await bcrypt.genSalt();
+            obj.password =  await bcrypt.hash(obj.password, salt);
+        }
+        return super.update(id, obj);
+    }
+
     async findAllByOwner(userId): Promise<UserDocument[]> {
         return this.modelUser.find({owner: userId}).exec().catch(reason => reason);
     }
