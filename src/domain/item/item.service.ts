@@ -33,7 +33,7 @@ export class ItemService extends GenericService<ItemListDocument> {
                 input: bufferStream
             });
             let itemList: ItemList = new ItemList();
-            // itemList.inventory = idInventory;
+             itemList.inventory = idInventory;
             let itens: Item[] = new Array<Item>();
             for await (const line of readInterface) {
                 // readInterface.on('line', function (line,) {
