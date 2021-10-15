@@ -1,4 +1,7 @@
-import {Prop, Schema} from "@nestjs/mongoose";
+import {Prop, Schema, SchemaFactory} from "@nestjs/mongoose";
+import {Document} from 'mongoose';
+
+export type ItemDocument = Item & Document;
 
 @Schema()
 export class Item {
@@ -16,3 +19,4 @@ export class Item {
     @Prop({trim: true})
     section: String;
 }
+export const ItemSchema = SchemaFactory.createForClass(Item);

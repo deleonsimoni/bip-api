@@ -8,12 +8,15 @@ import {FileService} from "../file/file.service";
 import * as Buffer from "buffer";
 import {ItemService} from "../item/item.service";
 import * as Http from "http";
+import { ItemList, ItemListDocument } from '../schemas/itemList';
 
 @Injectable()
 export class InventoryService {
 
     constructor(
         @InjectModel(Inventory.name) private readonly model: Model<InventoryDocument>,
+        @InjectModel(ItemList.name) private readonly itemModel: Model<ItemListDocument>,
+
         private fileservice: FileService, private itemService: ItemService
     ) {
     }
@@ -23,8 +26,149 @@ export class InventoryService {
         return this.model.findById(id).exec();
     }
 
+    async comboSelect(owner) {
+        return this.model.find({owner: owner}).select('client startDate endDate').populate({path: 'client'}).exec().catch(reason => reason);
+    }
+
+    async getInventaryExcel(idInventary) {
+        return this.model.findById(idInventary).select('client startDate endDate summary owner description employees').populate({path: 'client employees owner'}).exec().catch(reason => reason);
+    }
+
+    async getInventoryUser(idUser) {
+        return this.model.find({ "employees": idUser })
+        .select('startDate endDate client')
+        .populate('client', '-phones -address -headquarters')
+        .exec().catch(reason => reason);
+    }
+
+    async getItensInventoryUser(idInventory) {
+        console.log(idInventory)
+        return this.itemModel.find({inventory: idInventory})
+        .exec().catch(reason => reason);
+    }
+
+
+    async getItensPaginated(idInventary, page, size) {
+        return this.model.findById(idInventary, { itensClient : {
+            $slice: [-page * size, size]
+        }})
+        .select('-limbo -owner -employees -client -summary -description -startDate -endDate')
+        .exec().catch(reason => reason);
+    }
+
+    async getLimboPaginated(idInventary, page, size) {
+        return this.model.findById(idInventary, { limbo : {
+            $slice: [-page * size, size]
+        }})
+        .select('-itensClient -owner -employees -client -summary -description -startDate -endDate')
+        .exec().catch(reason => reason);    
+    }
+
+    async getLimboFull(idInventary) {
+        return this.model.findById(idInventary)
+        .select('limbo')
+        .exec().catch(reason => reason);    
+    }
+
+    async getItensFull(idInventary) {
+        return this.model.findById(idInventary)
+        .select('itensClient')
+        .exec().catch(reason => reason);    
+    }
+    
     async findAll(): Promise<Inventory[]> {
         return this.model.find().exec().catch(reason => reason);
+    }
+
+    async createInventoryExcel(obj: any, userId: any): Promise<Inventory> {
+
+        let persisted;
+        obj.owner = userId;
+
+        try {
+            
+            obj.limbo = [];
+
+            let summary = {
+                totalClient: 0,
+                totalBip: 0,
+                totalFind: 0,
+                totalLimbo: 0
+            };
+
+            for (var clientIndex = 0; clientIndex < obj.itensClient.length; clientIndex++) {
+
+                if(obj.itensClient[clientIndex].refer == null){
+                    continue;
+                }
+                summary.totalClient += Number(obj.itensClient[clientIndex].quantity);
+
+                for (var bipIndex = 0; bipIndex < obj.itensBip.length; bipIndex++) {
+
+                    if(obj.itensClient[clientIndex].refer == obj.itensBip[bipIndex].refer){
+
+                        if(obj.itensClient[clientIndex].bip){
+                            obj.itensClient[clientIndex].bip.push({
+                                section: obj.itensBip[bipIndex].section || null,
+                                quantity: obj.itensBip[bipIndex].quantity,
+                                device: obj.itensBip[bipIndex].device || null
+                            });
+                        } else {
+                            obj.itensClient[clientIndex].bip = [{
+                                section: obj.itensBip[bipIndex].section || null,
+                                quantity: obj.itensBip[bipIndex].quantity,
+                                device: obj.itensBip[bipIndex].device || null
+                            }];
+                        }
+
+                        summary.totalFind += Number(obj.itensBip[bipIndex].quantity);
+
+                    }
+                    
+
+                }
+
+            }
+
+
+            for (var bipIndex = 0; bipIndex < obj.itensBip.length; bipIndex++) {
+                summary.totalBip += Number(obj.itensBip[bipIndex].quantity);
+                let find = false;
+
+                for (var clientIndex = 0; clientIndex < obj.itensClient.length; clientIndex++) {
+                    if(obj.itensClient[clientIndex].refer == obj.itensBip[bipIndex].refer){
+                        find = true;
+                        break;
+                    }
+                }
+
+                if(!find){
+                    summary.totalLimbo += Number(obj.itensBip[bipIndex].quantity);
+                    obj.limbo.push({
+                        refer: obj.itensBip[bipIndex].refer,
+                        section: obj.itensBip[bipIndex].section || null,
+                        quantity: obj.itensBip[bipIndex].quantity,
+                        device: obj.itensBip[bipIndex].device || null
+                    });
+                }
+
+            }
+
+
+            obj.summary = summary;
+            console.log(summary)
+
+            persisted = await this.model.create(obj).catch(reason => {
+                throw new HttpException(reason, HttpStatus.BAD_REQUEST);
+            });
+            
+        } catch (e) {
+            console.log(e);
+            throw new HttpException("Erro no Servidor " + e, HttpStatus.BAD_REQUEST);
+        }
+
+        return persisted;
+
     }
 
     async create(obj: Inventory, file: Express.Multer.File, req: any): Promise<Inventory> {
@@ -38,8 +182,8 @@ export class InventoryService {
                 throw new HttpException("Invalid File", HttpStatus.BAD_REQUEST);
             }
             obj.url = url;
+            obj.owner = req.user.id;
             let persisted;
-
             persisted = await this.model.create(obj).catch(reason => {
                 throw new HttpException(reason, HttpStatus.BAD_REQUEST);
             });

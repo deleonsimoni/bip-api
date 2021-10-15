@@ -40,7 +40,7 @@ export class ItemService extends GenericService<ItemListDocument> {
                 let item: Item = new Item();
                 if (obj.positionFile.refer) {
                     const pos: string[] = obj.positionFile.refer.split('-');
-                    item.refer = line.substr(Number(pos[0]), Number(pos[1]));
+                    item.refer = line.substr(Number(pos[0]), Number(pos[1])).trim();
                 }
                 if (obj.positionFile.referPrev) {
                     const pos: string[] = obj.positionFile.referPrev.split('-');

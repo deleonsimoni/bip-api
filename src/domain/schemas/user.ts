@@ -8,7 +8,7 @@ export type UserDocument = User & Document;
 
 @Schema()
 export class User {
-    @Prop({require: true})
+    @Prop({require: true, select: false})
     password: string;
 
     @Prop({require: true, lowercase: true, unique: true})

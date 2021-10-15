@@ -18,6 +18,22 @@ export class InventoryController  {
         return this.service.create(object, file, req);
     }
 
+    @Get('/inventaryUser')
+    getInventary(@Request() req) {
+        return this.service.getInventoryUser(req.user.id);
+    }
+
+    @Get('/inventaryUser/:id/itens')
+    getItensInventoryUser(@Request() req) {
+        return this.service.getItensInventoryUser(req.params.id);
+    }
+
+    @Post('/inventoryExcel')
+    async createInventoryExcel(@Body() obj, @Request() req) {
+        const object = obj;
+        return this.service.createInventoryExcel(object, req.user.id);
+    }
+
     @Put(':id')
     @UseInterceptors(FileInterceptor('file'))
     async update(@Param('id') id: string, @Body() obj: any, @Request() req, @UploadedFile() file: Express.Multer.File) {
@@ -33,12 +49,43 @@ export class InventoryController  {
 
     @Get()
     findAll(@Request() req) {
+        console.log(req.user.id)
         return this.service.findAll();
     }
 
     @Get(':id')
     findOne(@Param('id') id: string, @Request() req): Promise<Inventory> {
         return this.service.findOne(id);
+    }
+
+    @Get('/inventoryExcel/getCombo')
+    inventoryExcelCombo(@Request() req) {
+        return this.service.comboSelect(req.user.id);
+    }
+
+    @Get('/inventoryExcel/:id/getInventary')
+    inventoryExcelInventary(@Request() req, @Param('id') id: string) {
+        return this.service.getInventaryExcel(id);
+    }
+
+    @Get('/inventoryExcel/:id/getItensPaginated')
+    getItensPaginated(@Request() req, @Param('id') id: string) {
+        return this.service.getItensPaginated(id, req.query.page, req.query.size);
+    }
+
+    @Get('/inventoryExcel/:id/getLimboPaginated')
+    getLimboPaginated(@Request() req, @Param('id') id: string) {
+        return this.service.getLimboPaginated(id, req.query.page, req.query.size);
+    }
+
+    @Get('/inventoryExcel/:id/getItensFull')
+    getItensFull(@Request() req, @Param('id') id: string) {
+        return this.service.getItensFull(id);
+    }
+
+    @Get('/inventoryExcel/:id/getLimboFull')
+    getLimboFull(@Request() req, @Param('id') id: string) {
+        return this.service.getLimboFull(id);
     }
 
 }

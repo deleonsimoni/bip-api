@@ -18,7 +18,7 @@ export class UserService extends GenericService<UserDocument> {
 
 
     async findByEmail(email: string): Promise<User | undefined> {
-        return this.modelUser.findOne({email: email}).exec();
+        return this.modelUser.findOne({email: email}).select('+password').exec();
     }
 
     override async create(obj: any): Promise<UserDocument> {
