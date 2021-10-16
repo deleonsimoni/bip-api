@@ -40,27 +40,27 @@ export class ItemService extends GenericService<ItemListDocument> {
                 let item: Item = new Item();
                 if (obj.positionFile.refer) {
                     const pos: string[] = obj.positionFile.refer.split('-');
-                    item.refer = line.substr(Number(pos[0]), Number(pos[1])).trim();
+                    item.refer = line.substr(Number(pos[0])-1, Number(pos[1])).trim();
                 }
                 if (obj.positionFile.referPrev) {
                     const pos: string[] = obj.positionFile.referPrev.split('-');
-                    item.referPrev = line.substr(Number(pos[0]), Number(pos[1]));
+                    item.referPrev = line.substr(Number(pos[0])-1, Number(pos[1]));
                 }
                 if (obj.positionFile.price) {
                     const pos: string[] = obj.positionFile.price.split('-');
-                    item.price = line.substr(Number(pos[0]), Number(pos[1]));
+                    item.price = line.substr(Number(pos[0])-1, Number(pos[1]));
                 }
                 if (obj.positionFile.description) {
                     const pos: string[] = obj.positionFile.description.split('-');
-                    item.description = line.substr(Number(pos[0]), Number(pos[1]));
+                    item.description = line.substr(Number(pos[0])-1, Number(pos[1]));
                 }
                 if (obj.positionFile.situation) {
                     const pos: string[] = obj.positionFile.situation.split('-');
-                    item.situation = line.substr(Number(pos[0]), Number(pos[1]));
+                    item.situation = line.substr(Number(pos[0])-1, Number(pos[1]));
                 }
                 if (obj.positionFile.section) {
                     const pos: string[] = obj.positionFile.section.split('-');
-                    item.section = line.substr(Number(pos[0]), Number(pos[1]));
+                    item.section = line.substr(Number(pos[0])-1, Number(pos[1]));
                 }
                 itens.push(item);
 

@@ -49,7 +49,6 @@ export class InventoryController  {
 
     @Get()
     findAll(@Request() req) {
-        console.log(req.user.id)
         return this.service.findAll();
     }
 

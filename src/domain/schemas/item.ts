@@ -18,5 +18,12 @@ export class Item {
     situation: String;
     @Prop({trim: true})
     section: String;
+    
+    @Prop()
+    bip: [{
+        section: {type:String},
+        quantity: {type:String},
+        device: {type:String}
+    }]
 }
 export const ItemSchema = SchemaFactory.createForClass(Item);

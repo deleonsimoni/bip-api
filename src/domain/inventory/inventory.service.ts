@@ -42,7 +42,6 @@ export class InventoryService {
     }
 
     async getItensInventoryUser(idInventory) {
-        console.log(idInventory)
         return this.itemModel.find({inventory: idInventory})
         .exec().catch(reason => reason);
     }
@@ -156,7 +155,6 @@ export class InventoryService {
 
 
             obj.summary = summary;
-            console.log(summary)
 
             persisted = await this.model.create(obj).catch(reason => {
                 throw new HttpException(reason, HttpStatus.BAD_REQUEST);
