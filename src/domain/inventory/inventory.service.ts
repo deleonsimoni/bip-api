@@ -54,6 +54,22 @@ export class InventoryService {
         .exec().catch(reason => reason);
     }
 
+    async findAll(id): Promise<Inventory[]> {
+        return this.model.find({owner: id})
+        .select('startDate endDate client isQuantify')
+        .populate('client', '-phones -address -headquarters')
+        .exec().catch(reason => reason);
+    }
+
+    async detailInventory(idUser, idInventory): Promise<Inventory[]> {
+        return this.model.find({'$and': [{_id: idInventory},{owner: idUser}]})
+        .select('startDate endDate client isQuantify description createdAt employees')
+        .populate('client', '-headquarters')
+        .populate('employees')
+
+        .exec().catch(reason => reason);
+    }
+
     async getItensInventoryUser(idInventory) {
         return this.itemModel.find({inventory: idInventory})
         .exec().catch(reason => reason);
@@ -88,9 +104,7 @@ export class InventoryService {
         .exec().catch(reason => reason);    
     }
     
-    async findAll(): Promise<Inventory[]> {
-        return this.model.find().exec().catch(reason => reason);
-    }
+
 
     async createInventoryExcel(obj: any, userId: any): Promise<Inventory> {
 

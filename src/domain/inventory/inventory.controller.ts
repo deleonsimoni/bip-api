@@ -49,7 +49,12 @@ export class InventoryController  {
 
     @Get()
     findAll(@Request() req) {
-        return this.service.findAll();
+        return this.service.findAll(req.user.id);
+    }
+
+    @Get('detailInventory/:id')
+    detailInventory(@Request() req, @Param('id') id: string) {
+        return this.service.detailInventory(req.user.id, id);
     }
 
     @Get(':id')
