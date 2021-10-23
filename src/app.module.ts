@@ -16,6 +16,7 @@ import { DashboardModule } from './domain/dashboard/dashboard.module';
 import { ConfigModule } from '@nestjs/config';
 import { FileService } from './domain/file/file.service';
 import { FileModule } from './domain/file/file.module';
+import { UtilService } from './domain/util/util.service';
 
 @Module({
     imports: [AuthModule, UserModule,
@@ -35,7 +36,7 @@ import { FileModule } from './domain/file/file.module';
     providers: [AppService, {
         provide: APP_GUARD,
         useClass: JwtAuthGuard,
-    }, FileService,],
+    }, FileService, UtilService,],
 })
 export class AppModule {
 }

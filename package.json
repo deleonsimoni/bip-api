@@ -36,6 +36,8 @@
     "bcrypt": "^5.0.1",
     "class-transformer": "^0.4.0",
     "class-validator": "^0.13.1",
+    "moment": "^2.24.0",
+    "moment-timezone": "^0.5.33",
     "mongoose": "^5.13.4",
     "mongoose-unique-validator": "^2.0.3",
     "passport": "^0.4.1",

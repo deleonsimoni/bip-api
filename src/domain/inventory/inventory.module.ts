@@ -9,11 +9,23 @@ import {ConfigModule} from "@nestjs/config";
 import {FileModule} from "../file/file.module";
 import {ItemModule} from "../item/item.module";
 import { ItemList, ItemListSchema } from '../schemas/itemList';
+import * as moment from 'moment-timezone';
+import { UtilService } from '../util/util.service';
 
 @Module({
-  imports: [MongooseModule.forFeature([{ name: Inventory.name, schema: InventorySchema }, { name: ItemList.name, schema: ItemListSchema }]), FileModule, ConfigModule, ItemModule],
+  imports: [MongooseModule.forFeature([{ name: Inventory.name, schema: InventorySchema },
+     { name: ItemList.name, schema: ItemListSchema }]),
+    
+      FileModule,
+      ConfigModule,
+      ItemModule],
   exports: [InventoryService],
   controllers: [InventoryController],
-  providers: [InventoryService]
+  providers: [InventoryService, UtilService,
+    {
+      provide: 'MomentWrapper',
+      useValue: moment
+    },
+  ]
 })
 export class InventoryModule {}

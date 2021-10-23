@@ -83,7 +83,7 @@ export class ItemService extends GenericService<ItemListDocument> {
         });
     }
 
-    async deleteByInventory(id: string) {
-        return this.modelItem.deleteMany().exec().catch(reason => reason);
+    async deleteByInventory(id) {
+        return this.modelItem.findByIdAndDelete(id).exec().catch(reason => reason);
     }
 }

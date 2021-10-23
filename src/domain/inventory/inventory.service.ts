@@ -1,4 +1,4 @@
-import {HttpException, HttpStatus, Injectable} from '@nestjs/common';
+import {HttpException, HttpStatus, Inject, Injectable} from '@nestjs/common';
 import {GenericService} from "../generics/generic.service";
 import {Client} from "../schemas/client";
 import {InjectModel} from "@nestjs/mongoose";
@@ -9,6 +9,7 @@ import * as Buffer from "buffer";
 import {ItemService} from "../item/item.service";
 import * as Http from "http";
 import { ItemList, ItemListDocument } from '../schemas/itemList';
+import { UtilService } from '../util/util.service';
 
 @Injectable()
 export class InventoryService {
@@ -16,8 +17,11 @@ export class InventoryService {
     constructor(
         @InjectModel(Inventory.name) private readonly model: Model<InventoryDocument>,
         @InjectModel(ItemList.name) private readonly itemModel: Model<ItemListDocument>,
+        private utilService: UtilService,
 
-        private fileservice: FileService, private itemService: ItemService
+
+        private fileservice: FileService,
+        private itemService: ItemService
     ) {
     }
 
@@ -35,8 +39,17 @@ export class InventoryService {
     }
 
     async getInventoryUser(idUser) {
-        return this.model.find({ "employees": idUser })
-        .select('startDate endDate client')
+        
+        const today = this.utilService.getActualDate();
+        return this.model.find({'$and': [{startDate: {
+            $lte: today
+          }},{endDate: {
+            $gte: today
+          }},
+          {employees: idUser}
+        ]})
+        
+        .select('startDate endDate client isQuantify')
         .populate('client', '-phones -address -headquarters')
         .exec().catch(reason => reason);
     }
@@ -173,13 +186,13 @@ export class InventoryService {
 
         if (file) {
             let url;
-            try {
+            /*try {
 
                 url = await this.fileservice.uploadFile(file.buffer, this.getFileName(obj, file, req));
             } catch (e) {
                 throw new HttpException("Invalid File", HttpStatus.BAD_REQUEST);
-            }
-            obj.url = url;
+            }*/
+            obj.url = 'aaaa';
             obj.owner = req.user.id;
             let persisted;
             persisted = await this.model.create(obj).catch(reason => {
