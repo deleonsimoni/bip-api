@@ -1,8 +1,9 @@
-import {Body, Controller, Delete, Get, Param, Post, Put, Request, UploadedFile, UseInterceptors} from '@nestjs/common';
+import {Body, Controller, Delete, Get, Param, Post, Put, Request, Res, UploadedFile, UseInterceptors} from '@nestjs/common';
 import {InventoryService} from './inventory.service';
 import {Inventory} from "../schemas/inventory";
 import {FileInterceptor} from "@nestjs/platform-express";
 import {ApiBearerAuth} from "@nestjs/swagger";
+import { Response } from 'express';
 
 
 @ApiBearerAuth()
@@ -53,10 +54,21 @@ export class InventoryController  {
     }
 
     @Get('detailInventory/:id')
-    detailInventory(@Request() req, @Param('id') id: string) {
+    detailInventory(@Request() req, @Param('id') id: string): Promise<any>  {
         return this.service.detailInventory(req.user.id, id);
     }
 
+    @Get('secoes/:id')
+    getSecoes(@Request() req, @Param('id') id: string): Promise<any>  {
+        return this.service.getSecoes(req.user.id, id);
+    }
+
+
+    @Get('export/:id/:idFormato')
+    exportFile(@Param('id') id: string,@Param('idFormato') idFormato: number){
+        return this.service.exportFile(id, idFormato);
+    }
+    
     @Get(':id')
     findOne(@Param('id') id: string, @Request() req): Promise<Inventory> {
         return this.service.findOne(id);

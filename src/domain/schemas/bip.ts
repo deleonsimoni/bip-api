@@ -1,24 +1,31 @@
 import {Prop, Schema, SchemaFactory} from '@nestjs/mongoose';
 import * as mongoose from 'mongoose';
 import {Document} from 'mongoose';
-import {Section} from "./section";
+import { Inventory } from './inventory';
 import {ItemList} from "./itemList";
+import { User } from './user';
 
-export type BipDocument = Section & Document;
+export type BipDocument = Document;
 
 @Schema()
 export class Bip {
 
+    @Prop({required: true, type: mongoose.Schema.Types.ObjectId, ref: "User"})
+    employee: User;
 
-    @Prop({required: true, type: mongoose.Schema.Types.ObjectId, ref: "Item"})
-    item: ItemList;
-
-    @Prop({required: true, type: mongoose.Schema.Types.ObjectId, ref: "Section"})
-    section: Section;
+    @Prop({required: true, type: mongoose.Schema.Types.ObjectId, ref: "Inventory"})
+    inventory: Inventory;
 
     @Prop()
-    count: number;
+    section: string;
 
+    @Prop()
+    bip: [{
+        bip: {type:String},
+        quantity: {type:String},
+        device: {type:String},
+        isFounded: {type:boolean}
+    }]
 }
 
 

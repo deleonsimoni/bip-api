@@ -9,7 +9,6 @@ import {MongooseModule} from "@nestjs/mongoose";
 import { CompanyModule } from './domain/company/company.module';
 import { ClientModule } from './domain/client/client.module';
 import { InventoryModule } from './domain/inventory/inventory.module';
-import { SectionModule } from './domain/section/section.module';
 import { BipModule } from './domain/bip/bip.module';
 import { ItemModule } from './domain/item/item.module';
 import { DashboardModule } from './domain/dashboard/dashboard.module';
@@ -27,7 +26,6 @@ import { UtilService } from './domain/util/util.service';
         }),
         ClientModule,
         InventoryModule,
-        SectionModule,
         BipModule,
         ItemModule,
         DashboardModule,

@@ -1,15 +1,13 @@
 import {HttpException, HttpStatus, Inject, Injectable} from '@nestjs/common';
-import {GenericService} from "../generics/generic.service";
-import {Client} from "../schemas/client";
 import {InjectModel} from "@nestjs/mongoose";
-import {Model} from "mongoose";
+import {Model, Mongoose} from "mongoose";
 import {Inventory, InventoryDocument} from "../schemas/inventory";
 import {FileService} from "../file/file.service";
-import * as Buffer from "buffer";
 import {ItemService} from "../item/item.service";
-import * as Http from "http";
 import { ItemList, ItemListDocument } from '../schemas/itemList';
 import { UtilService } from '../util/util.service';
+import { Bip, BipDocument } from '../schemas/bip';
+var mongoose = require('mongoose');
 
 @Injectable()
 export class InventoryService {
@@ -17,6 +15,8 @@ export class InventoryService {
     constructor(
         @InjectModel(Inventory.name) private readonly model: Model<InventoryDocument>,
         @InjectModel(ItemList.name) private readonly itemModel: Model<ItemListDocument>,
+        @InjectModel(Bip.name) private readonly bipModel: Model<BipDocument>,
+
         private utilService: UtilService,
 
 
@@ -61,20 +61,58 @@ export class InventoryService {
         .exec().catch(reason => reason);
     }
 
-    async detailInventory(idUser, idInventory): Promise<Inventory[]> {
-        return this.model.find({'$and': [{_id: idInventory},{owner: idUser}]})
+    async detailInventory(idUser, idInventory): Promise<any> {
+        let retorno: any = {};
+        retorno.inventory = await this.model.find({'$and': [{_id: idInventory},{owner: idUser}]})
         .select('startDate endDate client isQuantify description createdAt employees')
         .populate('client', '-headquarters')
         .populate('employees')
-
         .exec().catch(reason => reason);
+
+        //contabilizando total arquivo cliente
+        var totals = await this.itemModel.aggregate([
+            {$match: { 'inventory': mongoose.Types.ObjectId(idInventory) } },
+            {$project: {count: {$size: '$itens'}}}
+        ])
+        retorno.totalClient = totals[0].count
+
+        //contabilizando total bipado
+        totals = await this.bipModel.aggregate([
+        {$match: { 'inventory': mongoose.Types.ObjectId(idInventory) } },
+        {$project: {count: {$size: '$bip'}}},
+        ])
+
+        retorno.totalBip = totals.reduce((sum, li) => sum + li.count, 0)
+        return retorno;
+    }
+
+    async getSecoes(idUser, idInventory): Promise<any> {
+
+        let totals = await this.bipModel.aggregate([
+            {$match: { 'inventory': mongoose.Types.ObjectId(idInventory) } },
+            {$project: {'section': '$section',count: {$size: '$bip'}}},
+         ]);
+
+        return totals;
     }
 
     async getItensInventoryUser(idInventory) {
         return this.itemModel.find({inventory: idInventory})
         .exec().catch(reason => reason);
     }
+      
+    async exportFile(idInventory, idFormato) {
+        let totals = await this.bipModel.aggregate([
+            {$match: { 'inventory': mongoose.Types.ObjectId(idInventory) } },
+            {$project: {'bips': '$bip'}},
+         ]);
+         if(totals){
+            totals = [].concat.apply([], totals.map(tot =>tot.bips));
+         }
 
+        return totals;
+
+    }
 
     async getItensPaginated(idInventary, page, size) {
         return this.model.findById(idInventary, { itensClient : {

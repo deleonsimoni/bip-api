@@ -11,9 +11,12 @@ import {ItemModule} from "../item/item.module";
 import { ItemList, ItemListSchema } from '../schemas/itemList';
 import * as moment from 'moment-timezone';
 import { UtilService } from '../util/util.service';
+import { Bip, BipSchema } from '../schemas/bip';
 
 @Module({
-  imports: [MongooseModule.forFeature([{ name: Inventory.name, schema: InventorySchema },
+  imports: [MongooseModule.forFeature([
+    { name: Inventory.name, schema: InventorySchema },
+    { name: Bip.name, schema: BipSchema },
      { name: ItemList.name, schema: ItemListSchema }]),
     
       FileModule,

@@ -71,6 +71,7 @@ export class Inventory {
 
     @Prop()
     url: String;
+
 }
 
 
