@@ -13,10 +13,12 @@ import * as moment from 'moment-timezone';
 import { UtilService } from '../util/util.service';
 import { Bip, BipSchema } from '../schemas/bip';
 
+
 @Module({
   imports: [MongooseModule.forFeature([
     { name: Inventory.name, schema: InventorySchema },
     { name: Bip.name, schema: BipSchema },
+    { name: Client.name, schema: ClientSchema},
      { name: ItemList.name, schema: ItemListSchema }]),
     
       FileModule,

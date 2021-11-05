@@ -24,6 +24,7 @@ export class InventoryController  {
         return this.service.getInventoryUser(req.user.id);
     }
 
+  
     @Get('/inventaryUser/:id/itens')
     getItensInventoryUser(@Request() req) {
         return this.service.getItensInventoryUser(req.params.id);
@@ -73,6 +74,19 @@ export class InventoryController  {
     findOne(@Param('id') id: string, @Request() req): Promise<Inventory> {
         return this.service.findOne(id);
     }
+
+    @Get('/idEmployee/:id')
+    getEmployeeById(@Param('id') id: string, @Request() req) {
+        console.log('class InventoryController - method getEmployeeById '+ id);
+        return this.service.getEmployeeById(req.params.id);
+    }
+
+    @Get('/idCompany/:id')
+    getCompanyById(@Param('id') id: string, @Request() req) {
+        console.log('class InventoryController - method getCompanyById '+ id);
+        return this.service.getCompanyById(req.params.id);
+    }
+
 
     @Get('/inventoryExcel/getCombo')
     inventoryExcelCombo(@Request() req) {

@@ -27,6 +27,7 @@ export class GenericController<T extends Document> {
 
     @Delete(':id')
     delete(@Param('id') id: string) {
+        console.log('class GenericController '+id);
         return this.service.delete(id);
     }
 

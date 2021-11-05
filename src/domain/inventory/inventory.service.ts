@@ -5,6 +5,7 @@ import {Inventory, InventoryDocument} from "../schemas/inventory";
 import {FileService} from "../file/file.service";
 import {ItemService} from "../item/item.service";
 import { ItemList, ItemListDocument } from '../schemas/itemList';
+import { Client, ClientDocument} from '../schemas/client';
 import { UtilService } from '../util/util.service';
 import { Bip, BipDocument } from '../schemas/bip';
 var mongoose = require('mongoose');
@@ -16,6 +17,7 @@ export class InventoryService {
         @InjectModel(Inventory.name) private readonly model: Model<InventoryDocument>,
         @InjectModel(ItemList.name) private readonly itemModel: Model<ItemListDocument>,
         @InjectModel(Bip.name) private readonly bipModel: Model<BipDocument>,
+        @InjectModel(Client.name) private readonly clientModel: Model<ClientDocument>,
 
         private utilService: UtilService,
 
@@ -37,6 +39,45 @@ export class InventoryService {
     async getInventaryExcel(idInventary) {
         return this.model.findById(idInventary).select('client startDate endDate summary owner description employees').populate({path: 'client employees owner'}).exec().catch(reason => reason);
     }
+
+    
+    async getEmployeeById(idEmployee){
+        console.log('Employee information one '+idEmployee);
+        let retorno: any = {};
+        retorno.employee = await this.model.countDocuments({employees: idEmployee})
+                               .exec().catch(reason => reason);
+                               
+        return retorno.employee;
+     }
+
+    async getCompanyById(idClient){
+        //let retorno: any = {};
+        //retorno.client = await this.clientModel.find({headquarters: idClient})
+        //.select('headquarters')
+        //.exec().catch(reason => reason);
+        console.log('Client information one '+idClient);
+        let retorno: any = {};
+        retorno.client = await this.clientModel.countDocuments({headquarters: idClient})
+                               .exec().catch(reason => reason);
+        if (retorno.client == 0) {
+            //Enter this IF when it does not find headquarters.
+            console.log('Client information three '+retorno.client);
+            retorno.client = await this.model.countDocuments({client: idClient})
+            .exec().catch(reason => reason);
+            console.log('Client information three 1 '+retorno.client);
+            return retorno.client;
+            //return this.model.find({client: idClient})
+            //.select('client')
+            //.populate('client', '-phones -address -headquarters')
+            //.exec().catch(reason => reason);
+        }
+        else {
+            //Enter this else when it find headquarters.
+            console.log('Client information four '+retorno.client);
+            return retorno.client;
+        }
+    }
+
 
     async getInventoryUser(idUser) {
         
