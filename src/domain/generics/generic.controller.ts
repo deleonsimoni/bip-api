@@ -11,7 +11,6 @@ export class GenericController<T extends Document> {
 
     @Post()
     async create(@Body() obj, @Request() req) {
-
         if(!obj.password){
             obj.password = "123456";
         }
