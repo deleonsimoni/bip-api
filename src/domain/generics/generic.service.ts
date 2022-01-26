@@ -40,6 +40,7 @@ export abstract class GenericService<T extends Document> {
     }
 
     async delete(id: string) {
+        console.log('class GenericService '+id);
         return this.model.findByIdAndDelete(id).exec().catch(reason => {
             throw new HttpException(reason, HttpStatus.BAD_REQUEST)
         });

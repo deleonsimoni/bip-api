@@ -9,6 +9,7 @@ import {MongooseModule} from "@nestjs/mongoose";
 import { CompanyModule } from './domain/company/company.module';
 import { ClientModule } from './domain/client/client.module';
 import { InventoryModule } from './domain/inventory/inventory.module';
+import { TimeSheetModule} from './domain/timesheet/timesheet.module';
 import { BipModule } from './domain/bip/bip.module';
 import { ItemModule } from './domain/item/item.module';
 import { DashboardModule } from './domain/dashboard/dashboard.module';
@@ -16,6 +17,7 @@ import { ConfigModule } from '@nestjs/config';
 import { FileService } from './domain/file/file.service';
 import { FileModule } from './domain/file/file.module';
 import { UtilService } from './domain/util/util.service';
+
 
 @Module({
     imports: [AuthModule, UserModule,
@@ -26,6 +28,7 @@ import { UtilService } from './domain/util/util.service';
         }),
         ClientModule,
         InventoryModule,
+        TimeSheetModule,
         BipModule,
         ItemModule,
         DashboardModule,

@@ -36,6 +36,7 @@
     "bcrypt": "^5.0.1",
     "class-transformer": "^0.4.0",
     "class-validator": "^0.13.1",
+    "dateformat": "^5.0.2",
     "moment": "^2.24.0",
     "moment-timezone": "^0.5.33",
     "mongoose": "^5.13.4",
